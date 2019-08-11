@@ -103,12 +103,9 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
         bottomView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         self.view.addSubview(topView)
         self.view.addSubview(bottomView)
-        topView.translatesAutoresizingMaskIntoConstraints = false
-        bottomView.translatesAutoresizingMaskIntoConstraints = false
-        let horizontalTopConst = NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0)-[view]-(0)-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["view": topView])
-        let horizontalBottomConst = NSLayoutConstraint.constraints(withVisualFormat: "H:|-(0)-[view]-(0)-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["view": bottomView])
-        let verticalConst = NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0)-[top]-(0)-[bottom(70)]-|", options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: ["bottom": bottomView, "top": topView])
-        self.view.addConstraints(horizontalTopConst + horizontalBottomConst + verticalConst)
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: topView)
+        view.addConstraintsWithFormat(format: "H:|[v0]|", views: bottomView)
+        view.addConstraintsWithFormat(format: "V:|[v0][v1(70)]|", views: topView, bottomView)
 
         // image view
         imageView.contentMode = .scaleAspectFit
@@ -148,9 +145,9 @@ public class UIImageCropper: UIViewController, UIImagePickerControllerDelegate, 
         topView.addSubview(cropView)
         let centerXConst = NSLayoutConstraint(item: cropView, attribute: .centerX, relatedBy: .equal, toItem: topView, attribute: .centerX, multiplier: 1, constant: 0)
         let centerYConst = NSLayoutConstraint(item: cropView, attribute: .centerY, relatedBy: .equal, toItem: topView, attribute: .centerY, multiplier: 1, constant: 0)
-        let widthConst = NSLayoutConstraint(item: cropView, attribute: .width, relatedBy: .equal, toItem: topView, attribute: .width, multiplier: 0.9, constant: 0)
+        let widthConst = NSLayoutConstraint(item: cropView, attribute: .width, relatedBy: .equal, toItem: topView, attribute: .width, multiplier: 1, constant: -20)
         widthConst.priority = .defaultHigh
-        let heightConst = NSLayoutConstraint(item: cropView, attribute: .height, relatedBy: .lessThanOrEqual, toItem: topView, attribute: .height, multiplier: 0.9, constant: 0)
+        let heightConst = NSLayoutConstraint(item: cropView, attribute: .height, relatedBy: .lessThanOrEqual, toItem: topView, attribute: .height, multiplier: 1, constant: -20)
         let ratioConst = NSLayoutConstraint(item: cropView, attribute: .width, relatedBy: .equal, toItem: cropView, attribute: .height, multiplier: cropRatio, constant: 0)
         cropView.addConstraints([ratioConst])
         topView.addConstraints([widthConst, heightConst, centerXConst, centerYConst])
